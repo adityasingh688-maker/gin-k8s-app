@@ -17,8 +17,7 @@ spec:
       containers:
         - name: gin-app
           # Replaced by the CD pipeline with the freshly built SHA tag
-          image: gin-app:latest
-          imagePullPolicy: IfNotPresent
+          image: ghcr.io/adityasingh688-maker/gin-k8s-app:latest
           ports:
             - containerPort: 8080
           env:

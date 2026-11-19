@@ -13,7 +13,7 @@ func setupRouter() *gin.Engine {
 	r := gin.Default()
 
 	r.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "Hello from Gin on Kubernetes!"})
+		c.JSON(http.StatusOK, gin.H{"message": "Hello from Gin on Kubernetes! and the message has been changed <)"})
 	})
 
 	// Used by Kubernetes liveness/readiness probes
