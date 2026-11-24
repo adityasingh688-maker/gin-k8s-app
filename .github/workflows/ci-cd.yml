@@ -20,8 +20,21 @@ jobs:
       - run: go vet ./...
       - run: go test ./...
 
+  semgrep:
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@v4
+      - run: semgrep scan --config p/golang --error --json-output=semgrep-results.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: semgrep-results
+          path: semgrep-results.json
+
   build-and-push:
-    needs: test
+    needs: [test, semgrep]
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
@@ -55,6 +68,7 @@ jobs:
             ${{ steps.meta.outputs.image }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
   deploy:
     needs: build-and-push
     if: github.ref == 'refs/heads/main'
